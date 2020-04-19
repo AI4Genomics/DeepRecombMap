@@ -1,0 +1,22 @@
+#for creating the genomic "index" for the double stranded breaks
+awk -F '\t' '!/^#/' DSB_hotspots.txt | awk -F '\t' '{print $1":"$2"-"$3"(+)"}' DSB_hotspots.txt | tail -n +28 > DSB_hotspots_ID.txt
+
+# now you have to move the encode_roadmap_act.txt from your /Basset directory to this current one 
+
+# then we want to merge the two datasets
+# but first, we want to make sure that there's no overlap in genomic regions
+sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -d > duplicate.txt
+# no overlaps! let's merge
+sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -u > DSB_encode_roadmap.txt
+
+# to count the number of genomic regions: 
+wc -l DSB_encode_roadmap.txt # 2083997
+wc -l encode_roadmap_act.txt # 2021887
+# the difference is 62110, which is
+wc -l DSB_hotspots.txt
+# yay!
+
+# the DSB_encode_roadmap.txt file has all of the regions we care about.
+
+# now we need to identify whether they are from DSB (1) or not (0)
+
