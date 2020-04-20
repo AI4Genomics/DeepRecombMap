@@ -37,3 +37,8 @@ cat *.fa > hg19.fa
 # convert sequences to FASTA (needed for Torch)
 bedtools getfasta -fi ../data/fasta/hg19.fa -bed DSB_encode_roadmap.bed -s -fo DSB_encode_roadmap.fa
 
+#TO-DO: de-bug fasta_to_hdf5.py file
+# convert fasta to hdf5 using this command
+chmod u+x fasta_to_hdf5_v2.py
+./fasta_to_hdf5.py -c -r -t 71886 -v 70000 ./fasta/hg19.fa activity.txt DSB_encode_roadmap.h5
+
