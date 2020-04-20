@@ -13,4 +13,4 @@ df <- rbind(DSB, encode)
 summary(df)
 table(df$DSB)
 
-write.table(df, "activity.txt", sep="\t")
+write.table(df, "activity.txt", sep="\t", quote = FALSE, row.names = FALSE)
