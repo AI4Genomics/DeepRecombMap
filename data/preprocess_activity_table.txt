@@ -29,3 +29,9 @@ sed 's/:/\t/g; s/-/\t/g; s/(+)/\t/g' activity.txt | awk -F '\t' '{print $1, $2, 
 awk '{if ($7 ~ "0") {print}}' DSB_encode_roadmap.bed | lesss | wc -l
 # should be : 62110
 awk '{if ($7 ~ "1") {print}}' DSB_encode_roadmap.bed | lesss | wc -l
+
+# merge all FASTA files into a single one (hg19 reference format)
+# in the /fasta directory
+cat *.fa > hg19.fa
+
+
