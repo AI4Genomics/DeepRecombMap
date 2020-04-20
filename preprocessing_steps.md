@@ -1,14 +1,14 @@
 Steps to follow for Recomb data preprocessing
 ---
 
-###Run in command line
+### Run in command line
 
 For creating the genomic "index" for the double stranded breaks
 ```
 awk -F '\t' '!/^#/' DSB_hotspots.txt | awk -F '\t' '{print $1":"$2"-"$3"(+)"}' DSB_hotspots.txt | tail -n +28 > DSB_hotspots_ID.txt
 ```
 copy the **encode_roadmap_act.txt** from your Basset directory to this current one; then we want to merge the two datasets
-###Sanity check
+### Sanity check
 Make sure that there are no overlaps in genomic regions
 ```
 awk -F '\t' '{print $1}' encode_roadmap_act.txt > encode_roadmap_act_col1.txt
@@ -21,7 +21,7 @@ sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -d > duplicate.txt
 sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -u > DSB_encode_roadmap.txt
 ```
 
-###Sanity check:
+### Sanity check:
 To count the number of genomic regions: 
 ```
 wc -l DSB_encode_roadmap.txt # 2083997
@@ -66,7 +66,7 @@ Convert sequences to FASTA (needed for Torch)
 bedtools getfasta -fi ../data/fasta/hg19.fa -bed DSB_encode_roadmap.bed -s -fo DSB_encode_roadmap.fa
 ```
 
-#TO-DO: de-bug fasta_to_hdf5.py file
+# TODO: de-bug fasta_to_hdf5.py file
 convert fasta to hdf5 using this command
 ```
 ./fasta_to_hdf5.py -c -r -t 71886 -v 70000 ./fasta/hg19.fa activity.txt DSB_encode_roadmap.h5
