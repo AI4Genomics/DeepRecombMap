@@ -20,4 +20,10 @@ wc -l DSB_hotspots.txt
 # the DSB_encode_roadmap.txt file has all of the regions we care about.
 
 # now we need to identify whether they are from DSB (1) or not (0)
+# Rscript make_act.R
+
+# create bed file
+sed 's/:/\t/g; s/-/\t/g; s/(+)/\t/g' activity.txt | awk -F '\t' '{print $1, $2, $3}' | tail -n +2 | sed 's/ /\t/g' > DSB_encode_roadmap.bed
+
+
 
