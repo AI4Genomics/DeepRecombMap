@@ -13,6 +13,40 @@ import pandas as pd
 from optparse import OptionParser
 
 ################################################################################
+# seq_hdf5.py
+#
+# Make an HDF5 file for Torch input out of a FASTA file and targets text file,
+# dividing the data into training, validation, and test.
+################################################################################
+
+################################################################################
+# main
+################################################################################
+def main():
+    usage = 'usage: %prog [options] <fasta_file> <targets_file> <out_file>'
+    parser = OptionParser(usage)
+    parser.add_option('-a', dest='add_features_file', default=None, help='Table of additional features')
+    parser.add_option('-b', dest='batch_size', default=None, type='int', help='Align sizes with batch size')
+    parser.add_option('-c', dest='counts', default=False, action='store_true', help='Validation and training proportions are given as raw counts [Default: %default]')
+    parser.add_option('-e', dest='extend_length', type='int', default=None, help='Extend all sequences to this length [Default: %default]')
+    parser.add_option('-r', dest='permute', default=False, action='store_true', help='Permute sequences [Default: %default]')
+    parser.add_option('-s', dest='random_seed', default=1, type='int', help='numpy.random seed [Default: %default]')
+    parser.add_option('-t', dest='test_pct', default=0, type='float', help='Test % [Default: %default]')
+    parser.add_option('-v', dest='valid_pct', default=0, type='float', help='Validation % [Default: %default]')
+    parser.add_option('--vt', dest='valid_test', default=False, action='store_true', help='Use validation as test, too [Default: %default]')
+    (options,args) = parser.parse_args()
+
+    if len(args) != 3:
+        parser.error('Must provide fasta file, targets file, and an output prefix')
+    else:
+        fasta_file = args[0]
+        targets_file = args[1]
+        out_file = args[2]
+
+    # seed rng before shuffle
+    npr.seed(options.random_seed)
+
+################################################################################
 # align_seqs_scores
 #
 # Align entries from input dicts into numpy matrices ready for analysis.
@@ -201,42 +235,6 @@ def load_data_1hot(fasta_file, extend_len=None, mean_norm=True, whiten=False, pe
         #train_scores = train_scores[order]
 
     return train_seqs #train_scores
-
-
-################################################################################
-# seq_hdf5.py
-#
-# Make an HDF5 file for Torch input out of a FASTA file and targets text file,
-# dividing the data into training, validation, and test.
-################################################################################
-
-################################################################################
-# main
-################################################################################
-def main():
-    usage = 'usage: %prog [options] <fasta_file> <targets_file> <out_file>'
-    parser = OptionParser(usage)
-    parser.add_option('-a', dest='add_features_file', default=None, help='Table of additional features')
-    parser.add_option('-b', dest='batch_size', default=None, type='int', help='Align sizes with batch size')
-    parser.add_option('-c', dest='counts', default=False, action='store_true', help='Validation and training proportions are given as raw counts [Default: %default]')
-    parser.add_option('-e', dest='extend_length', type='int', default=None, help='Extend all sequences to this length [Default: %default]')
-    parser.add_option('-r', dest='permute', default=False, action='store_true', help='Permute sequences [Default: %default]')
-    parser.add_option('-s', dest='random_seed', default=1, type='int', help='numpy.random seed [Default: %default]')
-    parser.add_option('-t', dest='test_pct', default=0, type='float', help='Test % [Default: %default]')
-    parser.add_option('-v', dest='valid_pct', default=0, type='float', help='Validation % [Default: %default]')
-    parser.add_option('--vt', dest='valid_test', default=False, action='store_true', help='Use validation as test, too [Default: %default]')
-    (options,args) = parser.parse_args()
-
-    if len(args) != 3:
-        parser.error('Must provide fasta file, targets file, and an output prefix')
-    else:
-        fasta_file = args[0]
-        targets_file = args[1]
-        out_file = args[2]
-
-    # seed rng before shuffle
-    npr.seed(options.random_seed)
-
 
     #################################################################
     # load data
