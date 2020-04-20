@@ -34,4 +34,6 @@ awk '{if ($7 ~ "1") {print}}' DSB_encode_roadmap.bed | lesss | wc -l
 # in the /fasta directory
 cat *.fa > hg19.fa
 
+# convert sequences to FASTA (needed for Torch)
+bedtools getfasta -fi ../data/fasta/hg19.fa -bed DSB_encode_roadmap.bed -s -fo DSB_encode_roadmap.fa
 
