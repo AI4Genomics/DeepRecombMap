@@ -5,6 +5,7 @@ awk -F '\t' '!/^#/' DSB_hotspots.txt | awk -F '\t' '{print $1":"$2"-"$3"(+)"}' D
 
 # then we want to merge the two datasets
 # but first, we want to make sure that there's no overlap in genomic regions
+awk -F '\t' '{print $1}' encode_roadmap_act.txt > encode_roadmap_act_col1.txt
 sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -d > duplicate.txt
 # no overlaps! let's merge
 sort DSB_hotspots_ID.txt encode_roadmap_act_col1.txt | uniq -u > DSB_encode_roadmap.txt
