@@ -23,7 +23,9 @@ wc -l DSB_hotspots.txt
 # Rscript make_act.R
 
 # create bed file
-sed 's/:/\t/g; s/-/\t/g; s/(+)/\t/g' activity.txt | awk -F '\t' '{print $1, $2, $3}' | tail -n +2 | sed 's/ /\t/g' > DSB_encode_roadmap.bed
+sed 's/:/\t/g; s/-/\t/g; s/(+)/\t/g' activity.txt | awk -F '\t' '{print $1, $2, $3, $6}' | tail -n +2 |  sed 's/$/ ./g; s/$/ ./g; s/$/ +/g' |  awk -F ' ' '{print $1, $2, $3, $5, $6, $7, $4}' | sed 's/ /\t/g' > DSB_encode_roadmap.bed
 
-
-
+# check to make sure that you have the correct # of 1s and 0s
+awk '{if ($7 ~ "0") {print}}' DSB_encode_roadmap.bed | lesss | wc -l
+# should be : 62110
+awk '{if ($7 ~ "1") {print}}' DSB_encode_roadmap.bed | lesss | wc -l
