@@ -14,7 +14,7 @@ class Recomb(nn.Module):
         super(Recomb, self).__init__()
 
         self.dropout = 0.3
-        self.num_cell_types = 164
+        self.num_class = 2
 
         self.conv1 = nn.Conv2d(4, 300, (19, 1), stride = (1, 1), padding=(9,0))
         self.conv2 = nn.Conv2d(300, 200, (11, 1), stride = (1, 1), padding = (5,0))
@@ -34,7 +34,7 @@ class Recomb(nn.Module):
         self.fc2 = nn.Linear(1000, 1000)
         self.bn5 = nn.BatchNorm1d(1000)
 
-        self.fc3 = nn.Linear(1000, self.num_cell_types)
+        self.fc3 = nn.Linear(1000, self.num_class)
 
     def forward(self, s):
         #s = s.permute(0, 2, 1).contiguous()                          # batch_size x 4 x 600
