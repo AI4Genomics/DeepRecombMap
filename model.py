@@ -9,9 +9,9 @@ import torch.nn as nn
 import argparse
 import torch.nn.functional as F
 
-class Basset(nn.Module):
+class Recomb(nn.Module):
     def __init__(self):
-        super(Basset, self).__init__()
+        super(Recomb, self).__init__()
 
         self.dropout = 0.3
         self.num_cell_types = 164
